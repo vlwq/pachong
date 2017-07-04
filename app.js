@@ -31,7 +31,7 @@ registerRoutes(app, routeMovie.routes)
 // 所以如果你监听 80 端口的话，浏览器就不需要输入端口了
 // 但是 1024 以下的端口是系统保留端口，需要管理员权限才能使用
 
-var host = 'localhost'
+var host = '0.0.0.0'
 var port = 8000
 
 var server = app.listen(port, host, function () {
