@@ -1,18 +1,11 @@
 const movie = require('../model/movie')
+const express = require('express')
+const routeMovie = express.Router()
+const model = movie
 
+routeMovie.get('/all' , function (req, res) {
+    const ms = model.all()
+    res.send(ms)
+})
 
-var all = {
-    path: '/api/movie/all',
-    method: 'get',
-    func: function(request, response) {
-        var ms = movie.all()
-        var r = JSON.stringify(ms)
-        response.send(r)
-    }
-}
-
-var routes = [
-    all,
-]
-
-module.exports.routes = routes
+module.exports = routeMovie

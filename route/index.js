@@ -1,26 +1,24 @@
-var sendHtml = function(path, response) {
-    var fs = require('fs')
-    var options = {
+const express = require('express')
+const movie = require('../model/movie')
+const index = express.Router()
+const model = movie
+const log = console.log.bind(console)
+
+const sendHtml = function(path, response) {
+    const fs = require('fs')
+    const options = {
         encoding: 'utf-8'
     }
     path = 'template/' + path
     fs.readFile(path, options, function(err, data){
-        console.log(`读取的html文件 ${path} 内容是`, data)
+        //log(`读取的html文件 ${path} 内容是`, data)
         response.send(data)
     })
 }
 
-var index = {
-    path: '/',
-    method: 'get',
-    func: function(request, response) {
-        var path = 'movie_index.html'
-        sendHtml(path, response)
-    }
-}
+index.get('/' , function (req, res) {
+    const path = 'movie_index.html'
+    sendHtml(path , res)
+})
 
-var routes = [
-    index,
-]
-
-module.exports.routes = routes
+module.exports = index

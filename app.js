@@ -1,41 +1,41 @@
-// 引入 express 并且创建一个 express 实例赋值给 app
-var express = require('express')
-var app = express()
-var bodyParser = require('body-parser')
-
+const express = require('express')
+const bodyParser = require('body-parser')
+const log = console.log.bind(console)
+// 先初始化一个 express 实例
+const app = express()
+// 设置 bodyParser
+// application/x-www-form-urlencoded
+//在web中传输的非ASCII字符需要进行编码
+app.use(bodyParser.urlencoded({
+    extended: false,
+}))
+// 设置 bodyParser 解析 json 格式的数据
+// application/json
 app.use(bodyParser.json())
-
+// 配置静态资源文件, 比如 js css 图片
+// const asset = __dirname + '/static'
+// app.use('/static', express.static(asset))
 // 配置静态文件目录
 app.use(express.static('static'))
 
+// 使用 app.use(path, route) 的方式注册路由程序
+const index  = require('./route/index')
+app.use('/', index)
+const movie  = require('./route/movie')
+app.use('/api/movie', movie)
 
-const registerRoutes = function(app, routes) {
-    for (var i = 0; i < routes.length; i++) {
-        var route = routes[i]
-        // 下面这段是重点
-        app[route.method](route.path, route.func)
-    }
+const run = (port=3000, host='') => {
+    const server = app.listen(port, host, () => {
+        // 非常熟悉的方法
+        const address = server.address()
+        host = address.address
+        port = address.port
+        log(`listening server at http://${host}:${port}`)
+    })
 }
-
-// 导入 route/index 的所有路由数据
-const routeIndex = require('./route/index')
-registerRoutes(app, routeIndex.routes)
-
-// 导入 route/movie 的所有路由数据
-const routeMovie = require('./route/movie')
-registerRoutes(app, routeMovie.routes)
-
-// listen 函数的第一个参数是我们要监听的端口
-// 这个端口是要浏览器输入的
-// 默认的端口是 80
-// 所以如果你监听 80 端口的话，浏览器就不需要输入端口了
-// 但是 1024 以下的端口是系统保留端口，需要管理员权限才能使用
-
-var host = '0.0.0.0'
-var port = 8000
-
-var server = app.listen(port, host, function () {
-    // var host = server.address().address
-    // var port = server.address().port
-    console.log(`应用实例，访问地址为 ${host}:${port}`)
-})
+if (require.main === module) {
+    const port = 8000
+    // host 参数指定为 '0.0.0.0' 可以让别的机器访问你的代码
+    const host = '0.0.0.0'
+    run(port, host)
+}

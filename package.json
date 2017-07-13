@@ -1,12 +1,13 @@
 {
     "scripts": {
-        "start": "node app.js"
+        "start": "node app.js",
+        "dev": "nodemon app.js"
     },
     "dependencies": {
         "body-parser": "^1.17.1",
+        "cookie-session": "^2.0.0-beta.2",
         "express": "^4.15.2",
-        "jquery": "^3.2.1",
-        "lodash": "^4.17.4"
+        "nodemon": "^1.11.0"
     },
     "name": "visual",
     "version": "1.0.0",
