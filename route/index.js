@@ -1,7 +1,5 @@
 const express = require('express')
-const movie = require('../model/movie')
 const index = express.Router()
-const model = movie
 const log = console.log.bind(console)
 
 const sendHtml = function(path, response) {
